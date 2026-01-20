@@ -1,0 +1,30 @@
+### @name login
+POST http://localhost:4001/auth/login
+content-type: application/json
+
+{
+    "email": "email@email.com",
+    "password": "123456"
+}
+
+### 
+@token = {{login.response.body.*.accessToken}}
+
+GET http://localhost:4001/users
+Authorization: Bearer {{token}}
+content-type: application/json
+
+{
+    "email": "email@email.com"
+}
+
+###
+
+POST http://localhost:4001/users
+content-type: application/json
+
+{
+    "name": "Usuário Teste",
+    "email": "email@email.com",
+    "password": "123456"
+}
