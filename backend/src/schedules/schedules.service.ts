@@ -9,24 +9,26 @@ export class SchedulesService {
     {
       id: 1,
       name: 'Camila Mendes',
-      date: '2025-01-22 16:00',
+      date: '2025-01-22T16:00',
       room: 'Sala 012',
       status: 'EM_ANALISE',
     },
     {
       id: 2,
       name: 'Anny Cardoso',
-      date: '2025-01-22 09:00',
+      date: '2025-01-22T09:00',
       room: 'Sala 012',
       status: 'AGENDADO',
     },
   ];
+
   create(createScheduleDto: CreateScheduleDto) {
-    return 'This action adds a new schedule';
+    return this.data.push(createScheduleDto);
   }
 
-  findAll({ page, limit, name, date }: QuerySchedulesDto) {
+  findAll({ page = 1, limit = 10, name, date }: QuerySchedulesDto) {
     let items = this.data;
+    console.log({ page, limit, name, date });
 
     if (name) {
       items = items.filter((i) =>
@@ -47,7 +49,7 @@ export class SchedulesService {
         page,
         limit,
         total,
-        totalPages: Math.ceil(total / limit),
+        totalPages: Math.ceil(total / limit) || 0,
       },
     };
   }
