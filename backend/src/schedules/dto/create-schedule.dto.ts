@@ -1,5 +1,5 @@
 import { IsDateString, IsEnum, IsNotEmpty, IsString } from 'class-validator';
-import { ScheduleStatus } from './ScheduleStatus.enum';
+import { ScheduleStatus } from './schedule-status.enum';
 
 export class CreateScheduleDto {
   id: number;

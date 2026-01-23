@@ -28,8 +28,6 @@ export class SchedulesService {
 
   findAll({ page = 1, limit = 10, name, date }: QuerySchedulesDto) {
     let items = this.data;
-    console.log({ page, limit, name, date });
-
     if (name) {
       items = items.filter((i) =>
         i.name.toLowerCase().includes(name.toLowerCase()),
