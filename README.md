@@ -84,7 +84,7 @@ Backend
 - [ ] Improve logs granularity
 - [ ] Add soft delete for users and appointments
 - [ ] Add tests (unit + e2e)
-- [ ] Fix swagger cookies based authentication
+- [x] Fix swagger cookies based authentication
 - [ ] Add seeds
 
 Frontend

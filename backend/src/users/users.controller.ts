@@ -14,7 +14,7 @@ import { Prisma } from 'generated/prisma/client';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 import { ApiBody, ApiCookieAuth } from '@nestjs/swagger';
 
-@ApiCookieAuth('in-app-cookie-name')
+@ApiCookieAuth('session-cookie')
 @UseGuards(JwtAuthGuard)
 @Controller('users')
 export class UsersController {
