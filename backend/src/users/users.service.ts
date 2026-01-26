@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { Prisma } from 'generated/prisma/client';
 
 import * as bcrypt from 'bcrypt';
 
@@ -13,7 +12,7 @@ export class UsersService {
     name: string;
     email: string;
     password: string;
-    role?: 'ADMIN' | undefined;
+    role?: 'ADMIN' | 'CUSTOMER';
   }) {
     data.password = await bcrypt.hash(data.password, 10);
 
@@ -23,11 +22,11 @@ export class UsersService {
   }
 
   findAll() {
-    return this.prisma.user.findMany()
+    return this.prisma.user.findMany();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} user`;
+    return this.prisma.user.findUnique({ where: { id } });
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

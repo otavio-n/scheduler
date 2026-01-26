@@ -63,6 +63,7 @@ model Log {
 
 enum Role {
   ADMIN
+  CUSTOMER
 }
 
 enum StatusSchedule {
