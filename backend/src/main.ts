@@ -4,10 +4,13 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
+import { ValidationPipe } from '@nestjs/common';
+
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  app.useGlobalPipes(new ValidationPipe());
   app.use(cookieParser());
   app.use(
     session({
@@ -16,7 +19,7 @@ async function bootstrap() {
       saveUninitialized: false,
       cookie: {
         httpOnly: true,
-        secure: false, // true in production com HTTPS
+        secure: false, // true in production HTTPS
         maxAge: 1000 * 60 * 60,
       },
     }),
