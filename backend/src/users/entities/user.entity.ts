@@ -1,4 +1,4 @@
-import { IsString } from 'class-validator';
+import { IsDate, IsString } from 'class-validator';
 
 export class User {
   id: number;
@@ -14,4 +14,7 @@ export class User {
 
   @IsString()
   email: string;
+
+  @IsDate()
+  createdAt: Date;
 }

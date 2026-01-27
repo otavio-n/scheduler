@@ -10,12 +10,13 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Prisma } from 'generated/prisma/client';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 import { ApiBody, ApiCookieAuth } from '@nestjs/swagger';
 import { RolesGuard } from 'src/common/guards/roles.guard';
 import { Roles } from './decorators/roles.decorator';
 import { UserRoles } from './dto/user-roles.enum';
+import { CreateUserDto } from './dto/create-user.dto';
+import { User } from './entities/user.entity';
 
 @ApiCookieAuth('session-cookie')
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -36,34 +37,47 @@ export class UsersController {
       },
     },
   })
-  create(
+  async create(
     @Body()
-    userData: Prisma.UserCreateInput,
-  ) {
-    return this.usersService.create(userData);
+    userData: CreateUserDto,
+  ): Promise<User> {
+    return await this.usersService.create(userData);
   }
 
   @Get()
   @Roles(UserRoles.ADMIN)
-  findAll() {
-    return this.usersService.findAll();
+  async findAll(): Promise<User[]> {
+    return await this.usersService.findAll();
   }
 
   @Get(':id')
   @Roles(UserRoles.ADMIN)
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+  async findOne(@Param('id') id: string): Promise<User> {
+    return await this.usersService.findOne(+id);
   }
 
   @Patch(':id')
   @Roles(UserRoles.ADMIN)
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        password: { type: 'string', example: '123456' },
+        name: { type: 'string', example: 'Mario' },
+        role: { type: 'string', example: 'ADMIN' },
+      },
+    },
+  })
+  async update(
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ): Promise<User> {
+    return await this.usersService.update(+id, updateUserDto);
   }
 
   @Delete(':id')
   @Roles(UserRoles.ADMIN)
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  async remove(@Param('id') id: string): Promise<User> {
+    return await this.usersService.remove(+id);
   }
 }
