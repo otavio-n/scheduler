@@ -1,10 +1,20 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { SchedulesService } from './schedules.service';
 import { CreateScheduleDto } from './dto/create-schedule.dto';
 import { UpdateScheduleDto } from './dto/update-schedule.dto';
-import { JwtAuthGuard } from "../common/guards/jwt-auth.guard";
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 import { QuerySchedulesDto } from './dto/query-schedules.dto';
-import { ApiCookieAuth } from '@nestjs/swagger';
+import { ApiCookieAuth, ApiQuery } from '@nestjs/swagger';
 
 @ApiCookieAuth('session-cookie')
 @UseGuards(JwtAuthGuard)
@@ -28,7 +38,10 @@ export class SchedulesController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateScheduleDto: UpdateScheduleDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateScheduleDto: UpdateScheduleDto,
+  ) {
     return this.schedulesService.update(+id, updateScheduleDto);
   }
 

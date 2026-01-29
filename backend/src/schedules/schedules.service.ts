@@ -2,9 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { CreateScheduleDto } from './dto/create-schedule.dto';
 import { UpdateScheduleDto } from './dto/update-schedule.dto';
 import { QuerySchedulesDto } from './dto/query-schedules.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class SchedulesService {
+  constructor(private prisma: PrismaService) {}
+
   private data = [
     {
       id: 1,
@@ -26,17 +29,10 @@ export class SchedulesService {
     return this.data.push(createScheduleDto);
   }
 
-  findAll({ page = 1, limit = 10, name, date }: QuerySchedulesDto) {
-    let items = this.data;
-    if (name) {
-      items = items.filter((i) =>
-        i.name.toLowerCase().includes(name.toLowerCase()),
-      );
-    }
-
-    if (date) {
-      items = items.filter((i) => i.date.startsWith(date));
-    }
+  async findAll({ page = 1, limit = 10, customerId, date }: QuerySchedulesDto) {
+    const items = await this.prisma.schedule.findMany({
+      where: { customerId, date: { gte: date } },
+    });
 
     const total = items.length;
     const start = (page - 1) * limit;
